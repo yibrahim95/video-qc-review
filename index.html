@@ -1,0 +1,671 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SBR-288 Rock 1 — What Changed</title>
+<style>
+  :root{
+    --navy:#212D5D; --navy-deep:#151D3E; --tint:#EEF0F7;
+    --coral:#FE5550; --ink:#1B2033; --muted:#5C637A;
+    --rule:#DCE0EC; --pass:#1B7F5A; --fail:#C4342F;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:#F7F8FC; color:var(--ink);
+    font-family:-apple-system,"Helvetica Neue",Arial,sans-serif;
+    line-height:1.6; font-size:16px;
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px 80px}
+
+  header{
+    background:var(--navy); color:#fff; margin-bottom:48px;
+    padding:72px 0 56px;
+  }
+  header .wrap{padding-bottom:0}
+  .eyebrow{
+    color:var(--coral); font-weight:700; font-size:13px;
+    letter-spacing:.18em; text-transform:uppercase; margin-bottom:20px;
+  }
+  h1{font-size:44px;line-height:1.15;margin:0 0 18px;font-weight:800;letter-spacing:-.02em}
+  header p{color:#C3C9E0;font-size:18px;max-width:70ch;margin:0}
+  .meta{
+    margin-top:36px;padding-top:22px;border-top:1px solid rgba(255,255,255,.2);
+    display:flex;flex-wrap:wrap;gap:40px;font-size:14px;color:#AEB6D2;
+  }
+  .meta b{display:block;color:#fff;font-size:16px;margin-bottom:2px}
+
+  h2{font-size:15px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
+     font-weight:700;margin:0 0 8px}
+  .change{
+    background:#fff;border:1px solid var(--rule);border-radius:14px;
+    padding:32px 34px;margin-bottom:32px;
+  }
+  .change h3{font-size:27px;margin:0 0 10px;color:var(--navy);font-weight:800;letter-spacing:-.01em}
+  .lede{color:var(--muted);font-size:17px;margin:0 0 24px}
+
+  .pair{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:24px 0}
+  .pair figure{margin:0}
+  .pair video,.pair img{
+    width:100%;border-radius:10px;display:block;background:#000;
+    border:1px solid var(--rule);
+  }
+  .tag{
+    display:inline-block;font-weight:800;font-size:12px;letter-spacing:.1em;
+    padding:4px 10px;border-radius:5px;margin-bottom:9px;
+  }
+  .tag.b{background:#FDECEB;color:var(--fail)}
+  .tag.a{background:#E4F4EC;color:var(--pass)}
+  figcaption{font-size:14px;color:var(--muted);margin-top:9px;line-height:1.45}
+
+  .why{border-left:3px solid var(--coral);padding:2px 0 2px 18px;margin:22px 0 0}
+  .why h4{margin:0 0 6px;font-size:16px;color:var(--navy)}
+  .why p{margin:0 0 10px}
+  .why p:last-child{margin-bottom:0}
+  .outcome{
+    background:var(--tint);border-radius:9px;padding:16px 20px;margin-top:20px;font-size:15px;
+  }
+  .outcome b{color:var(--navy)}
+
+  table{width:100%;border-collapse:collapse;margin:22px 0;font-size:15px}
+  th{background:var(--navy);color:#fff;text-align:left;padding:11px 13px;font-size:13px;
+     letter-spacing:.03em}
+  td{padding:10px 13px;border-bottom:1px solid var(--rule);vertical-align:top}
+  tr:nth-child(even) td{background:#FAFBFD}
+  code{background:var(--tint);padding:2px 6px;border-radius:4px;font-size:14px;
+       font-family:"SF Mono",Menlo,monospace;color:var(--navy-deep)}
+  .note{font-size:14px;color:var(--muted);margin-top:26px;padding-top:18px;
+        border-top:1px solid var(--rule)}
+  @media (max-width:760px){
+    .pair{grid-template-columns:1fr}
+    h1{font-size:32px}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="eyebrow">Smash Balloon &middot; Q3 2026 &middot; Rock 1</div>
+    <h1>SBR-288: what actually changed</h1>
+    <p>Sixteen changes shipped into the video pipeline, each shown before and after.
+    Every clip below is rendered from the real pipeline, not illustrated.</p>
+    <div class="meta">
+      <div><b>Yaz Ibrahim</b>Owner</div>
+      <div><b>18 of 19</b>QC items automated</div>
+      <div><b>25 videos</b>Audited</div>
+      <div><b>11 August 2026</b>Updated</div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="change">
+    <h2>The short version</h2>
+    <h3>Quality checks now run before a video publishes</h3>
+    <p class="lede">Q2 showed the pipeline could skip steps and let problems through.
+    Nobody could say which steps or how often, because quality was judged by whoever
+    happened to watch the file.</p>
+    <p>This rock audited 25 finished videos, found where quality was slipping, and
+    turned each recurring problem into a check that runs automatically. Some block a
+    render outright. The rest report before anything is published.</p>
+    <p>The audit found <b>63 specific problems</b> across those 25 videos. Not one was
+    defect-free.</p>
+  </div>
+
+  <!-- 1 -->
+  <div class="change">
+    <h2>Change 1</h2>
+    <h3>Text no longer runs off the screen</h3>
+    <p class="lede">On-screen text had no boundary, so a long line could run past the
+    edge of the frame and get sliced.</p>
+
+    <div class="pair">
+      <figure>
+        <span class="tag b">BEFORE</span>
+        <video src="clips/TextMarginBefore.mp4" autoplay muted loop playsinline></video>
+        <figcaption>The line runs straight off both sides. The viewer sees a sentence
+        with its start and end missing.</figcaption>
+      </figure>
+      <figure>
+        <span class="tag a">AFTER</span>
+        <video src="clips/TextMarginAfter.mp4" autoplay muted loop playsinline></video>
+        <figcaption>The same sentence, wrapped inside a 40px margin. The red guides mark
+        the boundary text can no longer cross.</figcaption>
+      </figure>
+    </div>
+
+    <div class="why">
+      <h4>What changed</h4>
+      <p>Text now goes through a component that owns the margin and wraps, rather than
+      each design remembering to leave room. A margin applied by hand is not enforcement;
+      one that text physically cannot cross is.</p>
+      <p>A check also catches the two things that defeat it: text told never to wrap, and
+      a fixed width wider than the safe area.</p>
+    </div>
+    <div class="outcome">
+      <b>Outcome:</b> clipped text becomes impossible to build rather than something to
+      spot afterwards. The check found <b>60 places</b> in the existing library where a
+      long line could still break out.
+    </div>
+  </div>
+
+  <!-- 2 -->
+  <div class="change">
+    <h2>Change 2</h2>
+    <h3>B-roll sits in the middle of the frame</h3>
+    <p class="lede">Mockups were drifting to the top of the frame, leaving the bottom
+    third dead and pushing content away from where the eye lands.</p>
+
+    <div class="pair">
+      <figure>
+        <span class="tag b">BEFORE</span>
+        <video src="clips/PlacementBefore.mp4" autoplay muted loop playsinline></video>
+        <figcaption>Pinned near the ceiling. Everything below it is empty background.</figcaption>
+      </figure>
+      <figure>
+        <span class="tag a">AFTER</span>
+        <video src="clips/PlacementAfter.mp4" autoplay muted loop playsinline></video>
+        <figcaption>The same mockup, centred in the safe band and clear of the caption
+        zone.</figcaption>
+      </figure>
+    </div>
+
+    <div class="why">
+      <h4>What changed</h4>
+      <p>Placement is owned by the layout, not by each design. A check measures where the
+      content actually sits and fails a clip that is badly off centre.</p>
+      <p>This one also cleaned up a mess: three parts of the system agreed on the safe
+      zone and a fourth used different numbers, which is why it had been warning on
+      videos that were fine. Now there is one definition.</p>
+    </div>
+    <div class="outcome">
+      <b>Outcome:</b> checked on every clip before it is assembled. Across 428 clips:
+      154 clean, 196 with a warning, 78 failing.
+    </div>
+  </div>
+
+  <!-- 3 -->
+  <div class="change">
+    <h2>Change 3</h2>
+    <h3>One thing on screen at a time</h3>
+    <p class="lede">Several elements were appearing at once, so the viewer had nowhere
+    to look and nothing followed what was being said.</p>
+
+    <div class="pair">
+      <figure>
+        <span class="tag b">BEFORE</span>
+        <video src="clips/StackedBefore.mp4" autoplay muted loop playsinline></video>
+        <figcaption>All three elements present from the first frame. Nothing guides the
+        eye and nothing tracks the voiceover.</figcaption>
+      </figure>
+      <figure>
+        <span class="tag a">AFTER</span>
+        <video src="clips/StackedAfter.mp4" autoplay muted loop playsinline></video>
+        <figcaption>The same three, revealed in turn so each lands with the line that
+        introduces it.</figcaption>
+      </figure>
+    </div>
+
+    <div class="why">
+      <h4>What changed</h4>
+      <p>The check took three attempts because counting things in a frame does not work:
+      one browser window containing three review cards looks identical to three separate
+      elements.</p>
+      <p>The rule itself was the answer. "One at a time <em>following the spoken word</em>"
+      is about sequencing, not quantity. Three things on screen at the end is fine if they
+      arrived one by one. So the clip is compared against itself: if nothing new appears
+      over time, nothing was revealed.</p>
+    </div>
+    <div class="outcome">
+      <b>Outcome:</b> <b>117 of 1248 clips</b> flagged as showing everything at once.
+      Verified in both directions, including on the browser-window case that broke the
+      earlier attempts.
+    </div>
+  </div>
+
+  <!-- 4 -->
+  <div class="change">
+    <h2>Change 4</h2>
+    <h3>B-roll starts exactly on the cut</h3>
+    <p class="lede">The one most visible in finished videos. B-roll was arriving late, so
+    the speaker was briefly on screen at the start of a sentence that should already have
+    been covered.</p>
+
+    <div class="pair">
+      <figure>
+        <span class="tag b">BEFORE</span>
+        <video src="clips/LeakBefore.mp4" autoplay muted loop playsinline></video>
+        <figcaption>Slowed 2.5&times;. The cut lands at 1.66s but B-roll does not appear
+        until 2.00s: nine frames of the speaker that should have been covered.</figcaption>
+      </figure>
+      <figure>
+        <span class="tag a">AFTER</span>
+        <video src="clips/LeakAfter.mp4" autoplay muted loop playsinline></video>
+        <figcaption>Same moment, same footage, B-roll starting on the cut instead of a
+        third of a second after it.</figcaption>
+      </figure>
+    </div>
+
+    <div class="why">
+      <h4>What changed</h4>
+      <p>B-roll used to be timed against spoken words, independently of where the video is
+      actually cut. Two separately calculated numbers never line up, and the gap between
+      them is the reveal.</p>
+      <p>Now the cut positions are recorded and B-roll is placed on them. If the boundary
+      <em>is</em> the cut, there is nothing left to reveal.</p>
+      <p>The information already existed: the step that removes silences was working out
+      where every cut lands and then discarding it. Recording it took six lines.</p>
+    </div>
+    <div class="outcome">
+      <b>Outcome:</b> every B-roll boundary measured was <b>late by 0.22 to 0.44 seconds</b>,
+      always in the same direction. Snapping them onto the cuts took unanchored boundaries
+      from 10 to 4 on the first video, with the remaining ones reported rather than moved
+      blindly.
+    </div>
+  </div>
+
+  <!-- 5 -->
+  <div class="change">
+    <h2>Change 5</h2>
+    <h3>Videos no longer end on a black frame</h3>
+    <p class="lede">The caption outlived the picture by a frame or two, so the video
+    finished on black with text stranded on it. On a loop it flashes every time.</p>
+
+    <div class="pair">
+      <figure>
+        <span class="tag b">BEFORE</span>
+        <video src="clips/EndFrameBefore.mp4" autoplay muted loop playsinline></video>
+        <figcaption>Ends on black with "one that doesn't." still burned on it.</figcaption>
+      </figure>
+      <figure>
+        <span class="tag a">AFTER</span>
+        <video src="clips/EndFrameAfter.mp4" autoplay muted loop playsinline></video>
+        <figcaption>Trailing black frames trimmed. The video ends on picture.</figcaption>
+      </figure>
+    </div>
+
+    <div class="why">
+      <h4>What changed</h4>
+      <p>A check looks at the last fraction of a second for a near-black frame that still
+      has bright caption pixels on it. A genuinely black fade with no text is left alone,
+      which is what stops it firing on clean endings.</p>
+      <p>Building the fix also exposed a bug in the check itself: a video it could not open
+      was quietly passing, because no frames read means no problems found. A check that
+      green-lights a file it never read is worse than no check.</p>
+    </div>
+    <div class="outcome">
+      <b>Outcome:</b> found in <b>5 of 25 videos</b>. Manual review had caught two, so the
+      check found three that human eyes missed.
+    </div>
+  </div>
+
+  <!-- 6 -->
+  <div class="change">
+    <h2>Change 6</h2>
+    <h3>Thumbnail copy is checked before it renders</h3>
+    <p class="lede">Three different capitalisation styles were shipping side by side, and
+    several thumbnails read as typos.</p>
+
+    <div class="pair">
+      <figure>
+        <span class="tag b">BEFORE</span>
+        <img src="assets/thumb-fix-before.jpg" alt="Thumbnail in title case">
+        <figcaption>"Your Feed Is / A Dead End". Title case, with a capital opening
+        the second line mid-sentence.</figcaption>
+      </figure>
+      <figure>
+        <span class="tag a">AFTER</span>
+        <img src="assets/thumb-fix-after.jpg" alt="Thumbnail in sentence case">
+        <figcaption>"Your feed is / a dead end". Same render, copy corrected at
+        source before anything was drawn.</figcaption>
+      </figure>
+    </div>
+
+    <div class="why">
+      <h4>What changed</h4>
+      <p>Two rules, taken straight from the audit: the second line continues the sentence
+      so it starts lowercase unless the first line closes, and interior words are not
+      capitalised. Brand names are exempt.</p>
+      <p>It runs inside the thumbnail generator and stops the render, so bad copy cannot
+      reach a file. Building it also found the source of the title-case variant: the
+      generator's own fallback was creating it.</p>
+    </div>
+    <div class="outcome">
+      <b>Outcome:</b> <b>18 of 24</b> thumbnails failed the check, including ones from the
+      most recent batch. Tested against all 24: every bad one caught, every good one
+      passed, no false alarms.
+    </div>
+  </div>
+
+
+  <div class="change">
+    <h2>Change 7</h2>
+    <h3>Captions stop landing on the video's own words</h3>
+    <p class="lede">The caption sits in a fixed band near the bottom. Almost every mockup was writing its own text into that same band, so two layers of text fought each other.</p>
+    <div class="pair">
+      <figure>
+        <span class="tag b">BEFORE</span>
+        <video src="clips/CollisionBefore.mp4" autoplay muted loop playsinline></video>
+        <figcaption>The caption covers the callout it is meant to be pointing at. Two competing lines, neither readable.</figcaption>
+      </figure>
+      <figure>
+        <span class="tag a">AFTER</span>
+        <video src="clips/CollisionAfter.mp4" autoplay muted loop playsinline></video>
+        <figcaption>The mockup content is raised clear of the caption band, so both read.</figcaption>
+      </figure>
+    </div>
+    <div class="why">
+      <h4>What changed</h4>
+      <p>A rule already existed saying B-roll content must sit above the subtitle line. Nothing was enforcing it. A check now reads each frame and fails a video where the two overlap.</p><p>This is the one check needing judgement rather than measurement, so it uses vision against a written rubric. Plain text detection was tried first and rejected: it misses the low-contrast mockup text these collisions actually involve.</p>
+    </div>
+    <div class="outcome"><b>Outcome:</b> the single biggest problem in the audit. Around <b>15 findings</b> across both brands, and most of the serious ones.</div>
+  </div>
+
+  <div class="change">
+    <h2>Change 8</h2>
+    <h3>Captions cover every spoken word</h3>
+    <p class="lede">Captions were dropping out mid-sentence, leaving stretches where someone is talking with nothing on screen.</p>
+    <div class="pair">
+      <figure>
+        <span class="tag b">BEFORE</span>
+        <div style="background:#fff;border:1px solid var(--rule);border-radius:10px;padding:22px 24px;font-size:15px">
+          <div style="color:var(--fail);font-weight:700;margin-bottom:8px">Gap found</div>
+          speech at 12.5s for 0.5s with no caption underneath
+        </div>
+        <figcaption>The check compares word timings against what is actually drawn on screen.</figcaption>
+      </figure>
+      <figure>
+        <span class="tag a">AFTER</span>
+        <div style="background:#fff;border:1px solid var(--rule);border-radius:10px;padding:22px 24px;font-size:15px">
+          <div style="color:var(--pass);font-weight:700;margin-bottom:8px">Clean</div>
+          every spoken word covered, no dropouts over 0.3s
+        </div>
+        <figcaption>Gaps longer than a third of a second now fail before publish.</figcaption>
+      </figure>
+    </div>
+    <div class="why">
+      <h4>What changed</h4>
+      <p>The first version was wrong: it flagged the pauses between words, which are breaths, not faults. It fired on every comma.</p><p>The real question is whether a caption was on screen while someone was talking, which needs the finished video, not the word list. The pipeline keeps a copy with captions and one without, so comparing them isolates the caption exactly.</p>
+    </div>
+    <div class="outcome"><b>Outcome:</b> caption dropouts caught before publish rather than noticed afterwards.</div>
+  </div>
+
+  <div class="change">
+    <h2>Change 9</h2>
+    <h3>The caption stays put</h3>
+    <p class="lede">The caption sat at one height on camera shots and a different height on B-roll, jumping on every cut.</p>
+    <div class="pair">
+      <figure>
+        <span class="tag b">BEFORE</span>
+        <video src="clips/DriftBefore.mp4" autoplay muted loop playsinline></video>
+        <figcaption>The caption hops up and down as the picture cuts. Distracting once you notice it.</figcaption>
+      </figure>
+      <figure>
+        <span class="tag a">AFTER</span>
+        <video src="clips/DriftAfter.mp4" autoplay muted loop playsinline></video>
+        <figcaption>One height, held across every cut.</figcaption>
+      </figure>
+    </div>
+    <div class="why">
+      <h4>What changed</h4>
+      <p>This needed care. There is a deliberate shift that moves the caption on B-roll so it clears the content, and a blunt rule would have fought a feature that exists on purpose.</p><p>So it tells the two apart: a consistent difference between shot types is reported as intentional to confirm, while wandering inside a single shot type fails.</p>
+    </div>
+    <div class="outcome"><b>Outcome:</b> real drift is caught, the deliberate shift is left alone.</div>
+  </div>
+
+  <div class="change">
+    <h2>Change 10</h2>
+    <h3>Mockups are big enough to read on a phone</h3>
+    <p class="lede">Mockups were being scaled down until nothing inside them could be read at thumb size.</p>
+    <div class="pair">
+      <figure>
+        <span class="tag b">BEFORE</span>
+        <video src="clips/TooSmallBefore.mp4" autoplay muted loop playsinline></video>
+        <figcaption>The whole interface takes up a fraction of the frame. None of the text is legible on a phone.</figcaption>
+      </figure>
+      <figure>
+        <span class="tag a">AFTER</span>
+        <video src="clips/TooSmallAfter.mp4" autoplay muted loop playsinline></video>
+        <figcaption>The same mockup, scaled so the content is actually readable.</figcaption>
+      </figure>
+    </div>
+    <div class="why">
+      <h4>What changed</h4>
+      <p>Measuring text size from the finished picture failed twice. The way through was that we render these ourselves, so the text size is written in the design file rather than something to guess at.</p><p>Flagging every small size was useless, since a real interface legitimately has small labels. The signal is the largest text in a design: if even that is small, nothing in it reads.</p>
+    </div>
+    <div class="outcome"><b>Outcome:</b> <b>45 designs</b> flagged across the library, 2 badly enough to block.</div>
+  </div>
+
+  <div class="change">
+    <h2>Change 11</h2>
+    <h3>Brand colours on the elements that matter</h3>
+    <p class="lede">Colours were being hand-picked instead of taken from the brand palette, so the element the eye lands on was sometimes off-brand.</p>
+    <div class="pair">
+      <figure>
+        <span class="tag b">BEFORE</span>
+        <video src="clips/BrandColourBefore.mp4" autoplay muted loop playsinline></video>
+        <figcaption>The main button is a muted blue, which is neither Smash Balloon colour. The one thing the viewer should notice is the one thing off-brand.</figcaption>
+      </figure>
+      <figure>
+        <span class="tag a">AFTER</span>
+        <video src="clips/BrandColourAfter.mp4" autoplay muted loop playsinline></video>
+        <figcaption>The same card using the brand accent.</figcaption>
+      </figure>
+    </div>
+    <div class="why">
+      <h4>What changed</h4>
+      <p>Every colour is checked against the brand palette. Three things pass through: real platform colours, since an Instagram mockup has to look like Instagram; interface conventions like a red error or the buttons on a browser window; and greys, judged by how colourful they are rather than by a list.</p>
+    </div>
+    <div class="outcome"><b>Outcome:</b> <b>409 hand-picked colours</b> found. Reported rather than blocking, since each is a small mechanical fix.</div>
+  </div>
+
+  <div class="change">
+    <h2>Change 12</h2>
+    <h3>B-roll keeps moving</h3>
+    <p class="lede">Clips were being held dead still for several seconds, which reads as a broken video.</p>
+    <div class="pair">
+      <figure>
+        <span class="tag b">BEFORE</span>
+        <video src="clips/FrozenBefore.mp4" autoplay muted loop playsinline></video>
+        <figcaption>Completely static. One video held a still image for 16 of its 33 seconds.</figcaption>
+      </figure>
+      <figure>
+        <span class="tag a">AFTER</span>
+        <video src="clips/FrozenAfter.mp4" autoplay muted loop playsinline></video>
+        <figcaption>The same content with continuous motion across the beat.</figcaption>
+      </figure>
+    </div>
+    <div class="why">
+      <h4>What changed</h4>
+      <p>The check samples motion across the clip and fails anything held still for four seconds or more. Tuned so a calm, slow-moving mockup still passes: the target is a frozen picture, not a quiet one.</p>
+    </div>
+    <div class="outcome"><b>Outcome:</b> found in one video, clean in everything from batch 07-04 onward. Already fixed during the quarter; the check keeps it fixed.</div>
+  </div>
+
+  <div class="change">
+    <h2>Change 13</h2>
+    <h3>Words are not cut off by a tight edit</h3>
+    <p class="lede">Trimming silence too aggressively can slice the end off a word, which sounds abrupt even when you cannot say why.</p>
+    <div class="pair" style="grid-template-columns:1fr">
+      <figure>
+        <img src="assets/clipped-words.jpg" alt="Waveform comparison">
+        <figcaption>Sound level approaching a pause. Above, a word cut off at full volume. Below, a real one from the library, decaying naturally into the silence.</figcaption>
+      </figure>
+    </div>
+    <div class="why">
+      <h4>What changed</h4>
+      <p>The ends of words are soft sounds, so a severed one leaves no obvious jump to detect. The giveaway is subtler: silence starting while the word is still sounding. Natural speech fades out; a cut one stops at full volume.</p>
+    </div>
+    <div class="outcome"><b>Outcome:</b> not happening in any of the 25 videos. The closest case sits just under the threshold, so this guards against it creeping back.</div>
+  </div>
+
+  <div class="change">
+    <h2>Change 14</h2>
+    <h3>A-roll plays at full framerate</h3>
+    <p class="lede">Some videos carried 25fps footage inside a 30fps file, so the encoder repeated every sixth frame and the speaker moved in steps.</p>
+    <div class="pair" style="grid-template-columns:1fr">
+      <figure>
+        <img src="assets/judder.png" alt="Frame difference before and after">
+        <figcaption>Each dip to zero is a repeated frame. Above, one every six frames like clockwork. Below, the same video re-exported correctly.</figcaption>
+      </figure>
+    </div>
+    <div class="why">
+      <h4>What changed</h4>
+      <p>This one is invisible to every normal check. The file says 30fps and all the metadata agrees; only the picture disagrees.</p><p>It counts genuinely repeated frames in the camera footage, where real footage never repeats, and separates a framerate mismatch from a deliberately held picture by how evenly the repeats are spaced.</p>
+    </div>
+    <div class="outcome"><b>Outcome:</b> found in <b>3 of 25 videos, including the most recent</b>. Unlike most findings, this was still happening.</div>
+  </div>
+
+  <div class="change">
+    <h2>Change 15</h2>
+    <h3>Product claims match the product</h3>
+    <p class="lede">Mockups and scripts occasionally claimed things the product does not do. Two videos had already been killed for exactly this.</p>
+    <div class="pair">
+      <figure>
+        <span class="tag b">BEFORE</span>
+        <div style="background:#fff;border:1px solid var(--rule);border-radius:10px;padding:22px 24px;font-size:15px">
+          <div style="color:var(--fail);font-weight:700;margin-bottom:8px">Blocked</div>
+          &quot;WPChat pulls every conversation into <b>one inbox</b>&quot;<br><span style="color:var(--muted)">WPChat has no unified inbox.</span>
+        </div>
+        <figcaption>A claim about a feature that does not exist.</figcaption>
+      </figure>
+      <figure>
+        <span class="tag a">AFTER</span>
+        <div style="background:#fff;border:1px solid var(--rule);border-radius:10px;padding:22px 24px;font-size:15px">
+          <div style="color:var(--pass);font-weight:700;margin-bottom:8px">Suggested instead</div>
+          Chat on your site so customers reach you in the moment, on the apps they already use.
+        </div>
+        <figcaption>The check offers the accurate wording, not just a rejection.</figcaption>
+      </figure>
+    </div>
+    <div class="why">
+      <h4>What changed</h4>
+      <p>I had this down as the one thing no check could handle, on the basis that it needs a human who knows the product. That was wrong: the product truth is already written down, so the check is mechanical.</p><p>The subtlety is negation. A production note saying &quot;NOT a unified inbox&quot; is the rule being followed, not broken. The first run flagged five projects and every one was a note like that.</p>
+    </div>
+    <div class="outcome"><b>Outcome:</b> across <b>106 projects: zero false claims</b>. The rules were already being followed; the check stops that slipping. 22 further claims flagged for a quick confirm.</div>
+  </div>
+
+  <div class="change">
+    <h2>Change 16</h2>
+    <h3>Thumbnails readable, on brand, eyes open</h3>
+    <p class="lede">Three smaller thumbnail checks, all now guaranteed rather than hoped for.</p>
+    <div class="pair">
+      <figure>
+        <span class="tag b">BEFORE</span>
+        <div style="background:#fff;border:1px solid var(--rule);border-radius:10px;padding:22px 24px;font-size:15px">
+          <div style="color:var(--fail);font-weight:700;margin-bottom:8px">Risks</div>
+          headline overflowing the safe width &middot; colours set by hand &middot; a frame caught mid-blink
+        </div>
+        <figcaption>Each of these had shipped at some point.</figcaption>
+      </figure>
+      <figure>
+        <span class="tag a">AFTER</span>
+        <div style="background:#fff;border:1px solid var(--rule);border-radius:10px;padding:22px 24px;font-size:15px">
+          <div style="color:var(--pass);font-weight:700;margin-bottom:8px">Guaranteed</div>
+          text auto-fits and refuses to overflow &middot; colours come from the brand palette &middot; another frame is picked if the eyes are closed
+        </div>
+        <figcaption>Handled by the generator itself rather than by a check afterwards.</figcaption>
+      </figure>
+    </div>
+    <div class="why">
+      <h4>What changed</h4>
+      <p>Two of these turned out answerable from the generator rather than by measuring the finished image. Text size auto-fits, and colours come from the brand palette, which I verified matches the real brand values.</p><p>The gap was a headline so long that even the smallest size overflows. That case now stops the render.</p>
+    </div>
+    <div class="outcome"><b>Outcome:</b> the eyes-open check already existed before this rock and is included for completeness.</div>
+  </div>
+
+  <div class="change">
+    <h2>Summary</h2>
+    <h3>All 19 items at a glance</h3>
+    <table>
+      <tr><th style="width:42%">Check</th><th style="width:16%">State</th><th>What it catches</th></tr>
+      <tr><td>Captions over on-screen text</td><td>Live</td><td>The caption sitting on a mockup's own words</td></tr>
+      <tr><td>Caption spelling</td><td>Live</td><td>Brand names mangled, "WPChat" as "WP Chat"</td></tr>
+      <tr><td>Caption timing</td><td>Live</td><td>Talking with no caption underneath</td></tr>
+      <tr><td>Caption position</td><td>Live</td><td>The caption drifting, while allowing the deliberate B-roll shift</td></tr>
+      <tr><td>Text too small to read</td><td>Live</td><td>A mockup shrunk until nothing in it is legible</td></tr>
+      <tr><td>Text cut off at the edges</td><td>Live</td><td>Change 1 above</td></tr>
+      <tr><td>Brand colours</td><td>Live</td><td>Hand-picked colours instead of brand ones</td></tr>
+      <tr><td>Accurate product claims</td><td>Live</td><td>Claims the product cannot support, checked against written product truth</td></tr>
+      <tr><td>Thumbnail copy</td><td>Live</td><td>Change 6 above</td></tr>
+      <tr><td>Thumbnail legible / on-brand</td><td>Live</td><td>Guaranteed by the generator, plus the one case it could not cover</td></tr>
+      <tr><td>Thumbnail eyes open</td><td>Live</td><td>Picks another frame if the eyes are shut</td></tr>
+      <tr><td>Frozen B-roll</td><td>Live</td><td>A clip held dead still</td></tr>
+      <tr><td>A-roll leak</td><td>Live</td><td>Change 4 above</td></tr>
+      <tr><td>Clipped words</td><td>Live</td><td>A word severed by a tight cut</td></tr>
+      <tr><td>B-roll placement</td><td>Live</td><td>Change 2 above</td></tr>
+      <tr><td>Stacked B-roll</td><td>Live</td><td>Change 3 above</td></tr>
+      <tr><td>End frame</td><td>Live</td><td>Change 5 above</td></tr>
+      <tr><td>A-roll framerate</td><td>Live</td><td>Juddering from a lower-rate source, invisible to any metadata check</td></tr>
+      <tr><td>Transitions</td><td>Not built</td><td>Deliberately dropped: two attempts could not tell a slow crossfade from a camera move reliably enough to trust</td></tr>
+    </table>
+
+    <p class="note">Two checks were built and deliberately not shipped, because both
+    flagged correct work. A check that cries wolf teaches everyone to ignore all of them,
+    which costs more than the problem it catches.</p>
+  </div>
+
+  <div class="change">
+    <h2>Against the rock</h2>
+    <h3>Success conditions</h3>
+    <table>
+      <tr><th style="width:44%">What was asked</th><th style="width:12%">State</th><th>Where it stands</th></tr>
+      <tr>
+        <td>A written list of specific failure points, each with a timestamp and screenshot</td>
+        <td><b style="color:var(--pass)">Met</b></td>
+        <td>63 findings across 25 videos, grouped into 19 defect types. Every one has a real example, not a general impression.</td>
+      </tr>
+      <tr>
+        <td>At least 6 concrete fixes shipped into the pipeline, each with a before and after</td>
+        <td><b style="color:var(--pass)">Met</b></td>
+        <td>16 changes shipped, shown above. Six of them corrected real output: framerate, end frame, thumbnail copy, frame alignment, the cut record, and cut anchoring.</td>
+      </tr>
+      <tr>
+        <td>All four stages complete</td>
+        <td><b style="color:#B45309">2 of 4</b></td>
+        <td>Scope &amp; pitch and Produce/draft are done. Review is this conversation. Publish &amp; measure needs the checks running on live work over the coming weeks.</td>
+      </tr>
+      <tr>
+        <td>Findings reviewed with Lianne at the Q3 midpoint</td>
+        <td><b style="color:#B45309">Now</b></td>
+        <td>This document and the full audit report.</td>
+      </tr>
+    </table>
+
+    <h3>How each check is enforced</h3>
+    <p>"Live" is not one thing, so it is worth splitting:</p>
+    <table>
+      <tr><th style="width:24%">Enforcement</th><th style="width:12%">Count</th><th>Which</th></tr>
+      <tr><td><b>Blocks the work</b></td><td>13</td><td>Caption spelling, timing and position; text too small; frozen B-roll; B-roll placement; A-roll leak; cut anchoring; clipped words; end frame; framerate; thumbnail copy and legibility</td></tr>
+      <tr><td><b>Reports, does not stop the render</b></td><td>3</td><td>Text cut off at the edges, brand colours, stacked B-roll. Caught and fixed during the edit. They stay as reports until the backlog below is cleared, then they block.</td></tr>
+      <tr><td><b>Runs at QC</b></td><td>2</td><td>Caption collision, through <code>/watch</code> after the first edit, since it needs eyes rather than measurement. Product claims, at the scripting stage where the wording is chosen. Both are steps in the workflow, not optional.</td></tr>
+      <tr><td><b>Not built</b></td><td>1</td><td>Transitions. Two attempts could not separate a slow crossfade from a camera move reliably enough to trust.</td></tr>
+    </table>
+
+    <h3>What is still outstanding</h3>
+    <p>The checks are live. The work they found is not all cleared yet, and it is
+    better to say so than to let the first person who runs them think their video
+    broke everything:</p>
+    <table>
+      <tr><th style="width:44%">Found</th><th style="width:16%">Count</th><th>Plan</th></tr>
+      <tr><td>Places a long line could still run off screen</td><td>60</td><td>Fix during the edit as they come up</td></tr>
+      <tr><td>Designs where nothing is readable on a phone</td><td>45</td><td>2 blocking, the rest as touched</td></tr>
+      <tr><td>Clips with two elements sharing the frame</td><td>54</td><td>Rebuild when the beat is next used</td></tr>
+      <tr><td>Hand-picked colours instead of brand ones</td><td>409</td><td>Mechanical, batch it</td></tr>
+      <tr><td>B-roll boundaries with no cut to snap to</td><td>2 per video</td><td>Needs a judgement call each time: merge the beat or add a cut</td></tr>
+    </table>
+
+    <p class="note">On the two checks that run deliberately: both sit at QC, after
+    the first edit, rather than inline. Caption collision needs judgement rather than
+    measurement, and product claims belong at the scripting stage where the wording is
+    actually chosen. Neither reaches publish unchecked. On the three that report
+    rather than block: they only block once the backlog above is cleared, because
+    switching them on today would fail almost every render on existing work rather
+    than on anything new, and a gate everyone bypasses is worse than no gate.</p>
+  </div>
+
+</div>
+</body>
+</html>
