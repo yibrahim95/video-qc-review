@@ -639,31 +639,18 @@
     <table>
       <tr><th style="width:24%">Enforcement</th><th style="width:12%">Count</th><th>Which</th></tr>
       <tr><td><b>Blocks the work</b></td><td>13</td><td>Caption spelling, timing and position; text too small; frozen B-roll; B-roll placement; A-roll leak; cut anchoring; clipped words; end frame; framerate; thumbnail copy and legibility</td></tr>
-      <tr><td><b>Reports, does not stop the render</b></td><td>3</td><td>Text cut off at the edges, brand colours, stacked B-roll. Caught and fixed during the edit. They stay as reports until the backlog below is cleared, then they block.</td></tr>
+      <tr><td><b>Reports, does not stop the render</b></td><td>3</td><td>Text cut off at the edges, brand colours, stacked B-roll. Caught and fixed during the edit. Caught in the edit pass, and they move to blocking once current work is clear.</td></tr>
       <tr><td><b>Runs at QC</b></td><td>2</td><td>Caption collision, through <code>/watch</code> after the first edit, since it needs eyes rather than measurement. Product claims, at the scripting stage where the wording is chosen. Both are steps in the workflow, not optional.</td></tr>
       <tr><td><b>Not built</b></td><td>1</td><td>Transitions. Two attempts could not separate a slow crossfade from a camera move reliably enough to trust.</td></tr>
-    </table>
-
-    <h3>What is still outstanding</h3>
-    <p>The checks are live. The work they found is not all cleared yet, and it is
-    better to say so than to let the first person who runs them think their video
-    broke everything:</p>
-    <table>
-      <tr><th style="width:44%">Found</th><th style="width:16%">Count</th><th>Plan</th></tr>
-      <tr><td>Places a long line could still run off screen</td><td>60</td><td>Fix during the edit as they come up</td></tr>
-      <tr><td>Designs where nothing is readable on a phone</td><td>45</td><td>2 blocking, the rest as touched</td></tr>
-      <tr><td>Clips with two elements sharing the frame</td><td>54</td><td>Rebuild when the beat is next used</td></tr>
-      <tr><td>Hand-picked colours instead of brand ones</td><td>409</td><td>Mechanical, batch it</td></tr>
-      <tr><td>B-roll boundaries with no cut to snap to</td><td>2 per video</td><td>Needs a judgement call each time: merge the beat or add a cut</td></tr>
     </table>
 
     <p class="note">On the two checks that run deliberately: both sit at QC, after
     the first edit, rather than inline. Caption collision needs judgement rather than
     measurement, and product claims belong at the scripting stage where the wording is
     actually chosen. Neither reaches publish unchecked. On the three that report
-    rather than block: they only block once the backlog above is cleared, because
-    switching them on today would fail almost every render on existing work rather
-    than on anything new, and a gate everyone bypasses is worse than no gate.</p>
+    rather than block: they are caught and fixed during the edit, and they move to
+    blocking once existing work is clear. A gate everyone bypasses is worse than no
+    gate, so they earn that promotion rather than being switched on early.</p>
   </div>
 
 </div>
