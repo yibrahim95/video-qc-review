@@ -88,6 +88,7 @@
   <div class="wrap">
     <div class="eyebrow">Smash Balloon &middot; Q3 2026 &middot; Rock 1</div>
     <h1>SBR-288: what actually changed</h1>
+    <p style="margin:0 0 14px"><a href="./closure.html" style="color:#FE5550;font-weight:700;text-decoration:none">Rock 1 is closed &mdash; read the closure summary &rarr;</a></p>
     <p>Sixteen changes shipped into the video pipeline, each shown before and after.
     Every clip below is rendered from the real pipeline, not illustrated.</p>
     <div class="meta">
@@ -620,12 +621,12 @@
       <tr>
         <td>At least 6 concrete fixes shipped into the pipeline, each with a before and after</td>
         <td><b style="color:var(--pass)">Met</b></td>
-        <td>16 changes shipped, shown above. Six of them corrected real output: framerate, end frame, thumbnail copy, frame alignment, the cut record, and cut anchoring.</td>
+        <td>16 changes shipped, shown above, 14 with a before and after. Four of them corrected output that had already shipped: Change 14 (A-roll framerate), Change 5 (end frame), Change 6 (thumbnail copy) and Change 4 (B-roll starts on the cut). The other twelve prevent the defect rather than repair past work. <i>Corrected 2026-09-01: this line previously read "six of them", counting frame alignment, the cut record and cut anchoring separately — all three are the internal fix numbering behind Change 4, not distinct changes.</i></td>
       </tr>
       <tr>
         <td>All four stages complete</td>
-        <td><b style="color:#B45309">2 of 4</b></td>
-        <td>Scope &amp; pitch and Produce/draft are done. Review is this conversation. Publish &amp; measure needs the checks running on live work over the coming weeks.</td>
+                <td><b style="color:#15803D">4 of 4</b></td>
+        <td>Scope &amp; pitch approved 1 Sep. Produce/draft done. Review 1 Sep. <b>Publish &amp; measure complete 15 Sep:</b> 27 videos shipped 27 Aug&ndash;10 Sep, every gate run on every one. On the audit's own classes, <b>0 findings, 27 of 27 clean</b> (before: 63 findings, 0 of 11 clean; caption collision 7 of 11 &rarr; 0 of 27). Honest gates also surfaced classes the audit never counted: 16 exposed jump cuts, 4 sub-second caption dropouts, 3 finals with 6&ndash;8% repeated frames from the caption composite &mdash; 14 of 27 fully clean. Full record <code>live-defect-rate.md</code>; collision gate validated blind on 36 videos (<code>checks/validation-log.md</code>); Change 14 traced to the caption compositor, not capture or export. <i>Updated 2026-09-15.</i></td>
       </tr>
       <tr>
         <td>Findings reviewed with Lianne at the Q3 midpoint</td>
@@ -651,6 +652,117 @@
     rather than block: they are caught and fixed during the edit, and they move to
     blocking once existing work is clear. A gate everyone bypasses is worse than no
     gate, so they earn that promotion rather than being switched on early.</p>
+  </div>
+
+  <div class="change">
+    <h2>Verified</h2>
+    <h3>What was actually checked, and how</h3>
+    <p class="lede">Everything above is a claim until someone runs it. This section records the
+    verification pass of <b>1 September 2026</b>, so the claims on this page can be traced rather
+    than taken on trust.</p>
+
+    <div class="why">
+      <h4>1. Every check traced to a real entry point</h4>
+      <p>A check that exists but is never called is the exact "steps get skipped" problem this
+      rock was created to close, so each one was followed to the command that runs it. Seven are
+      invoked directly from the skill documents. Six more run behind a single runner,
+      <code>run_gates.py</code>, which is itself called from two places. The thumbnail copy check
+      genuinely stops a render: the renderer imports it, runs it over every headline, and exits
+      with an error code rather than drawing. <b>The "18 of 19 automated" figure on this page
+      holds.</b></p>
+      <p>One gap found, and it is not on this page: a second, older copy of the thumbnail renderer
+      exists elsewhere in the codebase and has no copy check wired into it. If that copy is ever
+      the one used, that gate is absent. Being fixed.</p>
+    </div>
+
+    <div class="why">
+      <h4>2. First live defect rate, measured not estimated</h4>
+      <p>Seven finished videos from <b>27&ndash;31 August</b> &mdash; three Smash Balloon, four
+      WPChat &mdash; every one produced after the audit closed. The gates were run across all
+      seven finals and all seven project folders.</p>
+      <table>
+        <tr><th style="width:34%">Measure</th><th style="width:33%">Before (audit, 11 videos)</th><th>After (7 videos, 27&ndash;31 Aug)</th></tr>
+        <tr><td>Findings per video</td><td>5.7</td><td><b style="color:var(--pass)">0</b></td></tr>
+        <tr><td>Serious findings per video</td><td>1.5</td><td><b style="color:var(--pass)">0</b></td></tr>
+        <tr><td>Videos with no defects</td><td>0 of 11</td><td><b style="color:var(--pass)">7 of 7</b></td></tr>
+      </table>
+      <p>That covers the four defect classes that produced most of the audit's serious findings:
+      frozen B-roll, a video ending on a black frame, words cut off by a tight edit, and the
+      speaker showing through where B-roll should cover. On those, the pipeline is clean.</p>
+    </div>
+
+    <div class="why">
+      <h4>3. Two places where a skipped check was being read as a pass</h4>
+      <p>This is the more useful result, and it is the same failure the end-frame check caught in
+      itself: a file that is never examined looks identical to a file with nothing wrong.</p>
+      <p>The framerate check decides "am I looking at the speaker" with a face detector, and gives
+      up when it finds too few frames. It gave up on a finished talking-head video &mdash; it
+      found <b>zero</b> speaker frames in it &mdash; and the report showed no problem, because
+      only an outright failure was being turned into a finding. A second video did the same. The
+      caption checks skipped 4 of the 7 for a missing input and that, too, showed as silence.</p>
+      <p><b>This is the most likely reason judder was still visible after the audit.</b> Being
+      fixed two ways: the runner will report a skip as its own state, never as nothing, and the
+      speaker detection itself needs to work on footage that is entirely the speaker.</p>
+    </div>
+
+    <div class="why">
+      <h4>4. Thirteen reported failures checked by hand and excluded</h4>
+      <p>The caption checks reported drift and dropouts on three videos. Both were re-measured
+      frame by frame inside the caption area rather than trusted:</p>
+      <p><b>Reported as caption drift of 175&ndash;197px.</b> Measured: the caption sits at 1358
+      over the speaker and 1526 over B-roll, a gap of 169px against a deliberate designed shift of
+      170px. It was reporting the intended design as a fault.</p>
+      <p><b>Reported as half a second of speech with no caption.</b> Measured: the longest gap
+      anywhere is five frames, two tenths of a second, and it falls between caption pages by
+      design. Half a second is the checking interval, not the gap.</p>
+      <p>Counted at face value these would have added 13 defects that do not exist. They are
+      recorded as measurement artefacts, and the underlying checks need their sampling fixed
+      rather than their thresholds loosened.</p>
+    </div>
+
+    <div class="why">
+      <h4>5. Framerate traced upstream</h4>
+      <p>The question was whether footage is captured at the wrong rate or an export setting is
+      slipping through. Neither. All seven sources are natively 25fps and all seven finished
+      videos are 25fps, so nothing is being converted and no frames are being repeated inside the
+      pipeline. The rate is consistent by choice.</p>
+      <p>What that leaves is a delivery question rather than a bug: a 25fps master shown on a
+      platform that presents at 30fps will judder, and no check will ever see it, because the file
+      itself is perfectly consistent. Worth deciding deliberately. One older video does show a
+      genuine mismatch &mdash; 23.63 effective against a 25 container &mdash; passing just under
+      the threshold, which suggests the threshold is set too loose.</p>
+    </div>
+
+    <div class="why">
+      <h4>6. Known gaps, stated rather than left to be found</h4>
+      <p><b>Caption collision has no live number.</b> It is the largest single problem in the
+      audit, around 15 findings and most of the serious ones, and it is the one check that needs
+      judgement rather than measurement &mdash; so it runs per video at QC and was only run on one
+      of these seven. It is also the check with the thinnest validation: two videos, against 24
+      for thumbnail copy. Both gaps close with the same job, and it is the next one.</p>
+      <p><b>B-roll starting on the cut reports 57 loose edges across the seven videos.</b> By
+      design it reports what it cannot safely move rather than moving it blindly. Some of those
+      are legitimate B-roll-to-B-roll joins that need no cut to land on. Until each one is sorted
+      into "fine" or "missed", the number means nothing in either direction, so it is not being
+      presented as a defect count.</p>
+      <p><b>One video shows a caption spread far out of family</b> &mdash; 369px against 24px on
+      its neighbour. Partly explained by one-line versus two-line captions, but it needs eyes.</p>
+    </div>
+
+    <div class="outcome">
+      <b>Correction made on this page, 1 September.</b> The success-condition row above previously
+      credited six changes with correcting output that had already shipped, naming frame
+      alignment, the cut record and cut anchoring separately. All three are internal names for
+      what this page presents as one change, Change 4. The honest figure is four, and the row now
+      says so. The success condition itself is unaffected: it asks for at least six fixes shipped
+      with a before and after, which is 16 shipped and 14 paired.
+    </div>
+
+    <p class="note">Verification run 1 September 2026. Full working, commands and per-video
+    results in <code>sbr-288/live-defect-rate.md</code>; gate-by-gate build and calibration
+    history in <code>sbr-288/checks/validation-log.md</code>. Nothing in this section is a
+    projection &mdash; every figure above came from a run against shipped files, and the figures
+    that turned out to be wrong are listed as wrong.</p>
   </div>
 
 </div>

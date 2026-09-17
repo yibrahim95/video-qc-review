@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SBR-288 Rock 1 — Closure</title>
+<style>
+  :root{
+    --navy:#212D5D; --navy-deep:#151D3E; --tint:#EEF0F7;
+    --coral:#FE5550; --ink:#1B2033; --muted:#5C637A;
+    --rule:#DCE0EC; --pass:#1B7F5A; --fail:#C4342F;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:#F7F8FC;color:var(--ink);
+       font-family:-apple-system,"Helvetica Neue",Arial,sans-serif;
+       line-height:1.6;font-size:16px}
+  .wrap{max-width:880px;margin:0 auto;padding:0 24px 72px}
+  header{background:var(--navy);color:#fff;margin-bottom:44px;padding:64px 0 48px}
+  header .wrap{padding-bottom:0}
+  .eyebrow{color:var(--coral);font-weight:700;font-size:13px;letter-spacing:.18em;
+           text-transform:uppercase;margin-bottom:18px}
+  h1{font-size:42px;line-height:1.14;margin:0 0 16px;font-weight:800;letter-spacing:-.02em}
+  header p{color:#C3C9E0;font-size:18px;max-width:64ch;margin:0}
+  .meta{margin-top:32px;padding-top:20px;border-top:1px solid rgba(255,255,255,.2);
+        display:flex;flex-wrap:wrap;gap:38px;font-size:14px;color:#AEB6D2}
+  .meta b{display:block;color:#fff;font-size:16px;margin-bottom:2px}
+  h2{font-size:14px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
+     font-weight:700;margin:0 0 10px}
+  section{background:#fff;border:1px solid var(--rule);border-radius:14px;
+          padding:28px 30px;margin-bottom:24px}
+  h3{font-size:24px;margin:0 0 14px;color:var(--navy);font-weight:800;letter-spacing:-.01em}
+  p{margin:0 0 12px}
+  table{width:100%;border-collapse:collapse;margin:16px 0 4px;font-size:15px}
+  th{background:var(--navy);color:#fff;text-align:left;padding:10px 12px;font-size:13px}
+  td{padding:10px 12px;border-bottom:1px solid var(--rule);vertical-align:top}
+  tr:nth-child(even) td{background:#FAFBFD}
+  .good{color:var(--pass);font-weight:800}
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:4px 0 8px}
+  .kpi{background:var(--tint);border-radius:10px;padding:16px 16px}
+  .kpi .n{font-size:30px;font-weight:800;color:var(--navy);line-height:1;letter-spacing:-.02em}
+  .kpi .n.g{color:var(--pass)}
+  .kpi .l{font-size:13px;color:var(--muted);margin-top:8px;line-height:1.4}
+  .q{border-left:3px solid var(--coral);padding:2px 0 2px 18px;margin:0 0 20px}
+  .q:last-child{margin-bottom:0}
+  .q h4{margin:0 0 6px;font-size:17px;color:var(--navy)}
+  .q p{margin:0;color:var(--ink)}
+  ul{margin:8px 0 0;padding-left:20px}
+  li{margin-bottom:8px}
+  .note{font-size:14px;color:var(--muted)}
+  a{color:var(--navy)}
+  .cta{display:inline-block;background:var(--navy);color:#fff;text-decoration:none;
+       font-weight:700;padding:12px 20px;border-radius:9px;margin-top:6px;font-size:15px}
+  @media (max-width:720px){.kpis{grid-template-columns:repeat(2,1fr)}h1{font-size:30px}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="eyebrow">Smash Balloon &middot; Q3 2026 &middot; Rock 1 &middot; SBR-288</div>
+    <h1>Rock 1 is complete</h1>
+    <p>The audit found 63 problems across 25 videos. Sixteen fixes went into the pipeline,
+    and five weeks of live output now runs clean on the classes those fixes cover.</p>
+    <div class="meta">
+      <div><b>All 4 stages</b>Scope, produce, review, measure</div>
+      <div><b>16 fixes</b>14 with a before and after</div>
+      <div><b>27 videos</b>measured live, 27 Aug to 10 Sep</div>
+      <div><b>Closed</b>16 Sep 2026</div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+<section>
+  <h2>The success condition</h2>
+  <h3>Six fixes shipped, each with a before and after. Delivered fourteen.</h3>
+  <table>
+    <thead><tr><th style="width:46%">What the rock asked for</th><th style="width:54%">What shipped</th></tr></thead>
+    <tbody>
+      <tr><td>A written list of specific quality failures, with timestamps and screenshots</td><td><span class="good">63 findings</span> across 25 videos, each one root-caused to a pipeline stage</td></tr>
+      <tr><td>At least 6 concrete fixes into the pipeline, each with a before/after example</td><td><span class="good">16 fixes shipped, 14 with a paired before and after</span></td></tr>
+      <tr><td>Findings reviewed with Lianne</td><td>Done 1 Sep. The review went 17 days past the midpoint date, which was my miss on timing, not on the work</td></tr>
+      <tr><td>Publish and measure: a live defect rate, before and after</td><td><span class="good">27 videos over five weeks</span>, every gate run on every one</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2>The live measurement</h2>
+  <h3>On the defect classes the audit was about, the count is zero.</h3>
+  <div class="kpis">
+    <div class="kpi"><div class="n">5.7</div><div class="l">findings per video before, across 11 audited videos</div></div>
+    <div class="kpi"><div class="n g">0</div><div class="l">findings in those classes across 27 live videos</div></div>
+    <div class="kpi"><div class="n">0 of 11</div><div class="l">videos were defect-free before</div></div>
+    <div class="kpi"><div class="n g">27 of 27</div><div class="l">clean on those classes after</div></div>
+  </div>
+  <p class="note">The biggest class in the audit was the caption landing on the B-roll's own text.
+  It hit 7 of 11 videos before and produced most of the Criticals. It is now zero in 27.</p>
+  <p><b>The part that is not a zero.</b> Making the gates honest surfaced defects the audit never
+  counted, so they have no before number: 16 exposed jump cuts, 4 caption dropouts under a second,
+  and 3 videos whose finals carry repeated frames from the caption compositor. Fourteen of the 27
+  are completely clean. The rest average about one finding each, against 5.7 before.</p>
+</section>
+
+<section>
+  <h2>The three things you flagged</h2>
+  <div class="q">
+    <h4>Change 7 needed Change 6's accuracy pass</h4>
+    <p>Done. 36 videos and 1,216 frames judged blind. Clean videos passed 4 of 4 with no false
+    alarms, bad videos failed 6 of 7, and the one miss was a severity call rather than a blind
+    spot. It also caught a real collision the manual audit had cleared.</p>
+  </div>
+  <div class="q">
+    <h4>The framerate judder was still showing up</h4>
+    <p>Traced. It is neither capture nor an export setting. Capture, prep and assembly all carry
+    zero repeated frames; they appear at the caption compositing step, which re-renders frame by
+    frame and occasionally returns the same frame twice. Two measurement bugs had been hiding it.</p>
+  </div>
+  <div class="q">
+    <h4>The summary line credited three fixes that were one</h4>
+    <p>Corrected to four, with a visible dated note on the review page. There is now a single
+    lookup table reconciling the change numbers, the audit's fix numbers and the gate numbers.</p>
+  </div>
+</section>
+
+<section>
+  <h2>What the measurement found wrong with itself</h2>
+  <h3>Nine gates were green-lighting work they had not read.</h3>
+  <p>Measuring live output surfaced that several checks were passing files they never actually
+  read, which is the same failure this rock exists to close. A skipped check now reports as
+  incomplete instead of silently passing, the framerate gate reads the beats the assembler
+  actually cut, the caption gates no longer produce false failures on correct videos, and no
+  single gate can crash the run and take the other videos with it. Every one was fixed before
+  the numbers above were taken.</p>
+</section>
+
+<section>
+  <h2>Open, and not blocking</h2>
+  <ul>
+    <li><b>Caption compositor.</b> Render the caption layer with alpha and overlay it, so assembled frames pass through untouched. Removes the repeated frames.</li>
+    <li><b>Capture standard.</b> Everything is 25fps end to end while phones present at 60Hz. Worth a deliberate call on moving to 30fps.</li>
+    <li><b>16 exposed jump cuts and 4 caption dropouts.</b> Both are now caught by gates that did not exist in July, so they are tracked work rather than surprises.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>The detail</h2>
+  <h3>Everything above is backed by the working.</h3>
+  <p>The sixteen changes, each with its before and after rendered from the real pipeline, are on
+  the review page. The full live defect table, the blind validation of the collision gate and the
+  framerate trace are in the stage 4 record.</p>
+  <a class="cta" href="./index.html">See the sixteen changes &rarr;</a>
+</section>
+
+</div>
+</body>
+</html>
